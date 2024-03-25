@@ -6,11 +6,9 @@ tags:
   - TypeScript
 ---
 
-Recently, I encountered a challenging problem at work. I was responsible for developing the file upload function, which stores multiple versions of a file based on the file name.When uploading a file, the total number of bytes in the filename is counted and spliced into the name as an identifier.
+Recently, I encountered a challenging problem at work. I was responsible for developing the file upload function, which stores multiple versions of a file based on the filename. When uploading a file, the total number of bytes in the filename is counted and spliced into the name as an identifier.
 
-At first I used `string.length` as the filename byte count, which resulted in an identifier error.
-
-After I checked the wiki documentation, I have a new perception of character encoding.
+At first I used `string.length` as the filename byte count, which resulted in an identifier error. After I checked the wiki documentation, I have a new perception of character encoding.
 
 ## Unicode code points
 
