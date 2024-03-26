@@ -79,5 +79,5 @@ export default function Counter() {
 }
 ```
 
-![ref-out-of-control](./images/ref-out-of-control.png)
-![input-focus](./images/input-focus.png)
+![ref-out-of-control](/static/001-forwardRef-escape-hatches/ref-out-of-control.png)
+![input-focus](/static/001-forwardRef-escape-hatches/input-focus.png)
