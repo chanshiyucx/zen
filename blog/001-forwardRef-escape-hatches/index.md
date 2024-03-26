@@ -21,14 +21,13 @@ What is handled in effect is the side effects. For example:
 
 Although they are factors out of React’s control, React also wants to prevent them from getting out of control as much as possible in order to ensure the robustness of the application.
 
-To use the ref prop, you can assign it a callback function that receives the DOM element as an argument:
+To use the ref prop, you can assign it a callback function that receives the DOM element as an argument，you can then access the DOM element using the current property of the ref object.
 
 ```jsx
 import React, { useRef } from "react"
 
 function MyComponent() {
   const ref = useRef(null)
-
   return <div ref={ref}>Hello, World!</div>
 }
 ```
@@ -50,3 +49,35 @@ But in the following cases.
 - Execute `ref.current.appendChild` to insert a child node
 
 These are also DOM operations, but they are within React’s control, so performing these operations via ref is out of control.
+
+Here is an example of an out of control situation caused by using Ref to manipulate the DOM.
+
+```jsx
+export default function Counter() {
+  const [show, setShow] = useState(true)
+  const ref = useRef(null)
+
+  return (
+    <div>
+      <button
+        onClick={() => {
+          setShow(!show)
+        }}
+      >
+        Toggle with setState
+      </button>
+      <button
+        onClick={() => {
+          ref.current.remove()
+        }}
+      >
+        Remove from the DOM
+      </button>
+      {show && <p ref={ref}>Hello world</p>}
+    </div>
+  )
+}
+```
+
+![ref-out-of-control](./images/ref-out-of-control.png)
+![input-focus](./images/input-focus.png)
