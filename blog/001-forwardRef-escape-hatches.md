@@ -79,5 +79,147 @@ export default function Counter() {
 }
 ```
 
+Button 1 removes the P-node by means of React control.
+Button 2 removes the P-node by manipulating the DOM directly.
+
+If these two ways of removing P-nodes are mixed, then clicking button 1 and then button 2 will report an error.
+
 ![ref-out-of-control](/static/001-forwardRef-escape-hatches/ref-out-of-control.png)
+
+This is the result of the runaway situation caused by using Ref to manipulate the DOM.
+
+## How to limit runaway
+
+Now the question arises, since it is called out of control, it is React can not control, so how to limit the loss of control?
+
+In React, components can be divided into：
+
+- Low-order components
+- High-order components
+
+Low-order components are those that are wrapped based on the DOM, such as the following components, which are wrapped directly based on input nodes.
+
+In lower-order components, it is possible to point the ref directly to the DOM.
+
+```jsx
+function MyInput(props) {
+  const ref = useRef(null)
+  return <input ref={ref} {...props} />
+}
+```
+
+Higher-order components are those that are based on lower-order component wrappers, such as the following Form component, based on the Input component wrapper.
+
+```jsx
+function Form() {
+  return (
+    <>
+      <MyInput />
+    </>
+  )
+}
+```
+
+Higher-order components cannot point ref directly to the DOM. This restriction keeps the scope of ref runaway within a single component, and there will be no runaway ref across components.
+Take the example in the document, if we want to click a button in the Form component to operate the input focus.
+
+```jsx
+function MyInput(props) {
+  return <input {...props} />
+}
+
+function Form() {
+  const inputRef = useRef(null)
+
+  function handleClick() {
+    inputRef.current.focus()
+  }
+
+  return (
+    <>
+      <MyInput ref={inputRef} />
+      <button onClick={handleClick}>input聚焦</button>
+    </>
+  )
+}
+```
+
+When clicked, an error is reported as follows.
+
 ![input-focus](/static/001-forwardRef-escape-hatches/input-focus.png)
+
+This is because passing a ref to MyInput in the Form component fails, inputRef.current does not point to the input node.
+The reason for this is that React does not support passing refs across components by default, as mentioned above, in order to keep the scope of refs out of control within a single component.
+
+## Artificially removing the restriction
+
+If you must remove this restriction, you can use the `forwardRef` API to explicitly pass the ref.
+
+```jsx
+const MyInput = forwardRef((props, ref) => {
+  return <input {...props} ref={ref} />
+})
+
+function Form() {
+  const inputRef = useRef(null)
+
+  function handleClick() {
+    inputRef.current.focus()
+  }
+
+  return (
+    <>
+      <MyInput ref={inputRef} />
+      <button onClick={handleClick}>Focus the input</button>
+    </>
+  )
+}
+```
+
+With the use of `forwardRef` it is possible to pass ref across components.In the example, we pass inputRef from Form across components to MyInput and associate it with input.
+
+The intent of `forwardRef` is clear: since the developer manually calls `forwardRef` to break the restriction that prevents a runaway ref, he should know what he is doing and should take the corresponding risk himself.
+
+Also, with the presence of `forwardRef`, it is easier to locate the error after a ref-related error occurs.
+
+## useImperativeHandle
+
+In addition to restricting the passing of ref across components, there is another measure to prevent ref from getting out of control, and that is `useImperativeHandle`.
+
+Since refs get out of control because they use DOM methods that shouldn’t be used (like appendChild), I can restrict refs to only have methods that can be used.
+
+Modifying our MyInput component with `useImperativeHandle`.
+
+```jsx
+const MyInput = forwardRef((props, ref) => {
+  const realInputRef = useRef(null)
+  useImperativeHandle(ref, () => ({
+    focus() {
+      realInputRef.current.focus()
+    },
+  }))
+  return <input {...props} ref={realInputRef} />
+})
+```
+
+Now, the Form component can only fetch the following data structure through inputRef.current：
+
+```js
+{
+  focus() {
+    realInputRef.current.focus();
+  },
+}
+```
+
+It eliminates the situation where the developer takes the DOM by ref and then executes the API that should not be used, and the ref gets out of control.
+
+## Summary
+
+Normally, the use of ref is relatively rare, and he exists as an escape hatch.
+
+To prevent misuse/abuse that leads to ref getting out of control, React restricts that by default, ref cannot be passed across components.
+
+To break this restriction, `forwardRef` can be used.
+
+To reduce the misuse of ref on DOM, you can use `useImperativeHandle` to restrict the data structure passed by ref.
