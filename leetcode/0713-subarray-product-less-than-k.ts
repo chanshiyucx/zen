@@ -4,13 +4,13 @@ function numSubarrayProductLessThanK(nums: number[], k: number): number {
   }
 
   let ans = 0
-  let cur = 1
+  let product = 1
   let left = 0
 
   for (let right = 0; right < nums.length; right++) {
-    cur *= nums[right]
-    while (cur >= k) {
-      cur /= nums[left]
+    product *= nums[right]
+    while (product >= k) {
+      product /= nums[left]
       left++
     }
 
