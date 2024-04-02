@@ -20,13 +20,6 @@ function addTwoNumbers(
     carry = Math.floor(sum / 10)
     tail.next = node
     tail = tail.next
-    // if (!ans) {
-    //   ans = tail = node
-    // } else {
-    //   tail.next = node
-    //   tail = tail.next
-    // }
-
     l1 = l1?.next
     l2 = l2?.next
   }
