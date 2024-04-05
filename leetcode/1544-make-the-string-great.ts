@@ -1,25 +1,15 @@
 function makeGood(s: string): string {
-  if (s.length <= 1) {
-    return s
-  }
+  const stack = []
 
-  let arr = s.split("")
-  let pos = 0
-
-  while (pos < arr.length - 1) {
-    const beginChar = arr[pos]
-    const endChar = arr[pos + 1]
-    if (
-      beginChar !== endChar &&
-      beginChar.toLowerCase() === endChar.toLowerCase()
-    ) {
-      arr.splice(pos, 2)
-      pos = Math.max(pos - 1, 0)
+  for (const c of s) {
+    const peek = stack.at(-1)
+    if (peek && peek !== c && peek.toLowerCase() === c.toLowerCase()) {
+      stack.pop()
     } else {
-      pos += 1
+      stack.push(c)
     }
   }
-  return arr.join("")
+  return stack.join("")
 }
 
 console.log(makeGood("leEeetcode"))
