@@ -85,7 +85,7 @@
     let numAttempts = 0;
     let tryNow = function() {
         let element = document.querySelector(readySelector);
-        if (element) {
+        if (element && !!element.childNodes.length) {
           replaceTextOnPage(element)
         } else {
             numAttempts++;
