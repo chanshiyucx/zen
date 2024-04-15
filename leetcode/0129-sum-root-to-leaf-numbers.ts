@@ -16,28 +16,24 @@ const test = new TreeNode(
 )
 
 function sumNumbers(root: TreeNode | null): number {
-  const build = (node: TreeNode, list: number[], stack: number[][]) => {
-    list.push(node.val)
+  let ans = 0
+
+  const build = (node: TreeNode, result: number) => {
+    result = result * 10 + node.val
     if (!node.left && !node.right) {
-      stack.push(list)
+      ans += result
+      return
     }
     if (node.left) {
-      build(node.left, [...list], stack)
+      build(node.left, result)
     }
     if (node.right) {
-      build(node.right, [...list], stack)
+      build(node.right, result)
     }
   }
 
-  let ans = 0
-  const stack = []
-  build(root, [], stack)
+  build(root, 0)
 
-  for (const item of stack) {
-    item.forEach((e, i) => {
-      ans += e * 10 ** (item.length - i - 1)
-    })
-  }
   return ans
 }
 
