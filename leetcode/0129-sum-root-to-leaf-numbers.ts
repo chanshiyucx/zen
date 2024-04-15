@@ -16,25 +16,19 @@ const test = new TreeNode(
 )
 
 function sumNumbers(root: TreeNode | null): number {
-  let ans = 0
+  const build = (node: TreeNode, sum: number) => {
+    if (!node) {
+      return 0
+    }
 
-  const build = (node: TreeNode, result: number) => {
-    result = result * 10 + node.val
+    sum = sum * 10 + node.val
     if (!node.left && !node.right) {
-      ans += result
-      return
+      return sum
     }
-    if (node.left) {
-      build(node.left, result)
-    }
-    if (node.right) {
-      build(node.right, result)
-    }
+    return build(node.left, sum) + build(node.right, sum)
   }
 
-  build(root, 0)
-
-  return ans
+  return build(root, 0)
 }
 
 console.log(sumNumbers(test))
