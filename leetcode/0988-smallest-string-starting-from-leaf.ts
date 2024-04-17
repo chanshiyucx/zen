@@ -23,7 +23,7 @@ const test = new TreeNode(
 
 function smallestFromLeaf(root: TreeNode | null): string {
   let ans = ""
-  const find = (node: TreeNode, str: string) => {
+  const dfs = (node: TreeNode, str: string) => {
     if (!node) return
     str = String.fromCharCode(97 + node.val) + str
     if (!node.left && !node.right) {
@@ -33,10 +33,10 @@ function smallestFromLeaf(root: TreeNode | null): string {
       return
     }
 
-    find(node.left, str)
-    find(node.right, str)
+    dfs(node.left, str)
+    dfs(node.right, str)
   }
-  find(root, "")
+  dfs(root, "")
   return ans
 }
 
