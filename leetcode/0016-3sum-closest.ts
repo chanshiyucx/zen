@@ -15,7 +15,8 @@ function threeSumClosest(nums: number[], target: number): number {
       if (tmp < diff) {
         ans = sum
         diff = tmp
-      } else if (sum > target) {
+      }
+      if (sum > target) {
         right--
       } else {
         middle++
