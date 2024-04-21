@@ -5,28 +5,31 @@ function validPath(
   destination: number
 ): boolean {
   if (source === destination) return true
-  if (edges.length === 0) return true
+  if (edges.length === 0) return false
 
-  const queue = [source]
-  const visited = new Set()
+  const map = new Map<number, Set<number>>()
+  const visited = new Set<number>()
 
-  while (queue.length > 0) {
-    const c = queue.pop()
-    visited.add(c)
-    for (const edge of edges) {
-      if (edge[0] === c && !visited.has(edge[1])) {
-        if (edge[1] === destination) return true
-        queue.push(edge[1])
-      }
-
-      if (edge[1] === c && !visited.has(edge[0])) {
-        if (edge[0] === destination) return true
-        queue.push(edge[0])
-      }
-    }
+  for (const [src, dst] of edges) {
+    if (!map.has(src)) map.set(src, new Set())
+    if (!map.has(dst)) map.set(dst, new Set())
+    map.get(src).add(dst)
+    map.get(dst).add(src)
   }
 
-  return false
+  const dfs = (vertex) => {
+    if (vertex === destination) return true
+    if (visited.has(vertex)) return false
+    visited.add(vertex)
+    for (const next of map.get(vertex)) {
+      if (dfs(next)) {
+        return true
+      }
+    }
+    return false
+  }
+
+  return dfs(source)
 }
 
 console.log(
