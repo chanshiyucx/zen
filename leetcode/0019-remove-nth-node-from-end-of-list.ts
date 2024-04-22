@@ -7,41 +7,47 @@ class ListNode {
   }
 }
 
-// const test = new ListNode(
-//   1,
-//   new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5))))
-// )
-
-const test = new ListNode(1)
-
 function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
-  let curNode = head
-  let removeNode = head
-  let diff = 0
-  while (curNode) {
-    if (diff > n) {
-      removeNode = removeNode.next
-    }
-    curNode = curNode.next
-    diff++
+  let length = 0
+  let temp = head
+  while (temp) {
+    length++
+    temp = temp.next
   }
 
-  if (diff <= n) {
-    head = null
-  } else if (removeNode.next) {
-    removeNode.next = removeNode.next.next
+  let removeIndex = length - n
+  if (removeIndex === 0) {
+    head = head.next
+  } else {
+    temp = head
+    while (removeIndex > 1) {
+      temp = temp.next
+      removeIndex--
+    }
+    temp.next = temp.next.next
   }
 
   return head
 }
 
-const log = (head: ListNode): number[] => {
-  const ans = []
+const test1 = new ListNode(
+  1,
+  new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5))))
+)
+
+const test2 = new ListNode(1)
+
+const test3 = new ListNode(1, new ListNode(2))
+
+const log = (head: ListNode) => {
+  const list = []
   while (head) {
-    ans.push(head.val)
+    list.push(head.val)
     head = head.next
   }
-  return ans
+  console.log(list)
 }
 
-log(removeNthFromEnd(test, 1))
+log(removeNthFromEnd(test1, 2))
+log(removeNthFromEnd(test2, 1))
+log(removeNthFromEnd(test3, 1))
