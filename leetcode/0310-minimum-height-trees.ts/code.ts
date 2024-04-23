@@ -1,7 +1,3 @@
-// // 1、最矮树的根一定不是入度为1的点
-// // 2、把最矮树的叶子节点全部减掉，剩下的仍然是最矮树
-// // 3、所以对一个图，不断的把它的叶子节点减掉，减到最后剩下的就一定是最矮树的根
-
 function findMinHeightTrees(n: number, edges: number[][]): number[] {
   if (n === 1) {
     return [0]
@@ -16,25 +12,24 @@ function findMinHeightTrees(n: number, edges: number[][]): number[] {
     graph[child].push(parent)
   }
 
-  let ans: number[] = []
-  const queue: number[] = []
+  const leaves: number[] = []
   for (let i = 0; i < degree.length; i++) {
     if (degree[i] === 1) {
-      queue.push(i)
+      leaves.push(i)
     }
   }
 
-  while (queue.length) {
+  let ans: number[] = []
+  while (leaves.length) {
     ans = []
-    const length = queue.length
+    const length = leaves.length
     for (let i = 0; i < length; i++) {
-      const cur = queue.shift()
-      ans.push(cur)
-
-      for (const neighbour of graph[cur]) {
+      const leaf = leaves.shift()
+      ans.push(leaf)
+      for (const neighbour of graph[leaf]) {
         degree[neighbour]--
         if (degree[neighbour] === 1) {
-          queue.push(neighbour)
+          leaves.push(neighbour)
         }
       }
     }
