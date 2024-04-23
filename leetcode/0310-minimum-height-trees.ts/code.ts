@@ -3,38 +3,36 @@ function findMinHeightTrees(n: number, edges: number[][]): number[] {
     return [0]
   }
 
-  const degree: number[] = new Array(n).fill(0)
-  const graph: number[][] = Array.from({ length: n }, () => [])
-  for (const [parent, child] of edges) {
-    degree[parent]++
-    degree[child]++
-    graph[parent].push(child)
-    graph[child].push(parent)
+  const graph: Map<number, Set<number>> = new Map()
+
+  for (const [from, to] of edges) {
+    if (!graph.get(from)) graph.set(from, new Set())
+    if (!graph.get(to)) graph.set(to, new Set())
+    graph.get(from).add(to)
+    graph.get(to).add(from)
   }
 
-  const leaves: number[] = []
-  for (let i = 0; i < degree.length; i++) {
-    if (degree[i] === 1) {
-      leaves.push(i)
+  let leaves: number[] = []
+  for (const [leaf, list] of graph.entries()) {
+    if (list.size === 1) {
+      leaves.push(leaf)
     }
   }
 
-  let ans: number[] = []
-  while (leaves.length) {
-    ans = []
-    const length = leaves.length
-    for (let i = 0; i < length; i++) {
-      const leaf = leaves.shift()
-      ans.push(leaf)
-      for (const neighbour of graph[leaf]) {
-        degree[neighbour]--
-        if (degree[neighbour] === 1) {
-          leaves.push(neighbour)
+  while (n > 2) {
+    n -= leaves.length
+    const newLeaves = []
+    for (const leaf of leaves) {
+      for (const to of graph.get(leaf)) {
+        graph.get(to).delete(leaf)
+        if (graph.get(to).size === 1) {
+          newLeaves.push(to)
         }
       }
     }
+    leaves = newLeaves
   }
-  return ans
+  return leaves
 }
 
 console.log(
@@ -46,3 +44,13 @@ console.log(
     [5, 4],
   ])
 )
+
+// const graph = []
+// for (let i = 0; i < 6; i++) {
+//   graph.push(new Set().add(i).add(i))
+// }
+
+// console.log(graph[0])
+// console.log(graph[0].values())
+// console.log(graph[0].values().next())
+// console.log(graph[0].values().next().value)

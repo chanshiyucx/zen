@@ -1,7 +1,20 @@
 # Intuition
 
-1. 最矮树的根一定不是入度为 1 的点
-2. 把最矮树的叶子节点全部减掉，剩下的仍然是最矮树
-3. 所以对一个图，不断的把它的叶子节点减掉，减到最后剩下的就一定是最矮树的根
+1. The degree of a vertex of a graph is the number of edges incident to the vertex.
+2. A leaf is a vertex of degree 1.
+3. Remove all the leaves of the minimum height tree, and the remaining tree will still be the minimum height tree.
+4. So for a graph, keep removing its leaves, and at the end what remains must be the root of the minimum height tree.
+
+We start from every leaves. We let the pointers move the same speed. When two pointers meet, we keep only one of them, until the last two pointers meet or one step away we then find the roots.It is easy to see that the last two pointers are from the two ends of the longest path in the graph.
+
+The actual implementation is similar to the BFS topological sort. Remove the leaves, update the degrees of inner vertexes. Then remove the new leaves. Doing so level by level until there are 2 or 1 nodes left. What's left is our answer!
 
 # Approach
+
+1. Initialization:
+   - Use a map to keep track of the neighbours of every node. The length of the neighbours is the degree of node.
+   - Use a queue to keep track of all leaves.
+2. BFS Loop:
+   - Start a loop while the remains nodes at least 2.
+     - Remove the leaves, update the degrees of inner vertexes.
+     - When internal vertexes is degree 1. Its become new leaves.
