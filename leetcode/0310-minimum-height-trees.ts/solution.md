@@ -17,4 +17,4 @@ The actual implementation is similar to the BFS topological sort. Remove the lea
 2. BFS Loop:
    - Start a loop while the remains nodes at least 2.
      - Remove the leaves, update the degrees of inner vertexes.
-     - When internal vertexes is degree 1. Its become new leaves.
+     - When internal vertexes are degree 1. Its become new leaves.
