@@ -4,4 +4,6 @@ The intuition is to iteratively find the longest substring without repeating cha
 
 # Approach
 
+Below is the step-by-step breakdown of the approach:
+
 1. Use an integer array record to store the characters.

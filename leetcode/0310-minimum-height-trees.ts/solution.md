@@ -11,6 +11,8 @@ The actual implementation is similar to the BFS topological sort. Remove the lea
 
 # Approach
 
+Below is the step-by-step breakdown of the approach:
+
 1. Initialization:
    - Use a map to keep track of the neighbours of every node. The length of the neighbours is the degree of node.
    - Use a queue to keep track of all leaves.

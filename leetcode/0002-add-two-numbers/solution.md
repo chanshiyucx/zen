@@ -4,6 +4,8 @@ The Intuition is to iterate through two linked lists, starting from the least si
 
 # Approach
 
+Below is the step-by-step breakdown of the approach:
+
 1. Initialize a placeholder node called `ans`. This node will hold the resulting linked list.
 2. Initialize a pointer called tail and set it to `ans`. This pointer will keep track of the last node in the result list.
 3. Initialize a variable called carry to 0. This variable will store the carry value during addition.
