@@ -6,11 +6,11 @@ function longestIdealString(s: string, k: number): number {
     const cur = c.codePointAt(0) - start
     const begin = Math.max(0, cur - k)
     const end = Math.min(25, cur + k)
-    let tmp = 0
+    let best = 0
     for (let i = begin; i <= end; i++) {
-      tmp = Math.max(tmp, dp[i])
+      best = Math.max(best, dp[i])
     }
-    dp[cur] = tmp + 1
+    dp[cur] = best + 1
   }
 
   return Math.max(...dp)
