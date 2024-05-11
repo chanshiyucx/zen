@@ -6,8 +6,7 @@ function removeDuplicates(nums: number[]): number {
       index++
     }
   }
-  nums.splice(index)
-  return nums.length
+  return index
 }
 
 console.log(removeDuplicates([1, 1, 2]))
