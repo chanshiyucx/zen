@@ -11,38 +11,31 @@ function getMaximumGold(grid: number[][]): number {
     [-1, 0],
   ]
 
-  let ans = 0
-
-  // 搜索到i，j位置，能得到的总金币，可能有多种情况??
-  const find = (i, j, sum) => {
+  const dfs = (i, j) => {
     if (grid[i][j] === 0) {
-      return
+      return 0
     }
-    sum += grid[i][j]
-
-    if (sum > ans) {
-      ans = sum
-    }
-
+    let sum = grid[i][j]
     visited[i][j] = true
     for (const [dx, dy] of directions) {
       const newX = i + dx
       const newY = j + dy
       if (newX >= 0 && newX < m && newY >= 0 && newY < n) {
-        if (visited[newX][newY] === false) {
-          find(newX, newY, sum)
+        if (!visited[newX][newY]) {
+          sum = Math.max(sum, grid[i][j] + dfs(newX, newY))
         }
       }
     }
     visited[i][j] = false
+    return sum
   }
 
+  let ans = 0
   for (let i = 0; i < m; i++) {
     for (let j = 0; j < n; j++) {
-      find(i, j, 0)
+      ans = Math.max(ans, dfs(i, j))
     }
   }
-
   return ans
 }
 
