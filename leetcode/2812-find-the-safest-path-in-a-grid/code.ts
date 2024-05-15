@@ -19,7 +19,7 @@ function maximumSafenessFactor(grid: number[][]): number {
     }
   }
 
-  const group = [queue]
+  const groups = [queue]
   while (queue.length) {
     const nextQueue = []
     for (const [x, y] of queue) {
@@ -27,14 +27,13 @@ function maximumSafenessFactor(grid: number[][]): number {
         const nx = x + dx
         const ny = y + dy
         if (nx >= 0 && nx < n && ny >= 0 && ny < n && dis[nx][ny] === -1) {
-          dis[nx][ny] = group.length
+          dis[nx][ny] = groups.length
           nextQueue.push([nx, ny])
         }
       }
     }
-
     queue = nextQueue
-    group.push(queue)
+    groups.push(queue)
   }
 
   const fa = Array.from({ length: n * n }, (_, i) => i)
@@ -43,12 +42,11 @@ function maximumSafenessFactor(grid: number[][]): number {
     return fa[x]
   }
 
-  for (let i = group.length - 1; i >= 0; i--) {
-    const q = group[i]
-    for (const [x, y] of q) {
+  for (let i = groups.length - 1; i >= 0; i--) {
+    for (const [x, y] of groups[i]) {
       for (const [dx, dy] of directions) {
         const nx = x + dx
-        const ny = x + dy
+        const ny = y + dy
         if (
           nx >= 0 &&
           nx < n &&
@@ -71,8 +69,9 @@ function maximumSafenessFactor(grid: number[][]): number {
 
 console.log(
   maximumSafenessFactor([
-    [0, 0, 1],
-    [0, 0, 0],
-    [0, 0, 0],
+    [0, 0, 0, 1],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [1, 0, 0, 0],
   ])
 )
