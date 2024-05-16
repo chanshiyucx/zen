@@ -1,19 +1,24 @@
-function searchRange(nums: number[], target: number): number[] {
+function lowerBound(nums: number[], target: number): number {
   let left = 0
-  let right = nums.length - 1
-
-  while (left <= right) {
-    const mid = (left + right) >> 1
-    if (nums[mid] === target) {
-      // 进入捕获区间
-    }
-
-    if (nums[mid] <= target) {
-      right = mid - 1
+  let right = nums.length
+  while (left < right) {
+    const mid = left + ((right - left) >> 1)
+    if (nums[mid] < target) {
+      left = mid + 1
     } else {
-      left = mid
+      right = mid
     }
   }
-
-  return [-1, -1]
+  return left
 }
+
+function searchRange(nums: number[], target: number): number[] {
+  const start = lowerBound(nums, target)
+  if (start === nums.length || nums[start] !== target) {
+    return [-1, -1]
+  }
+  const end = lowerBound(nums, target + 1) - 1
+  return [start, end]
+}
+
+console.log(searchRange([5, 7, 7, 8, 8, 10], 8))
