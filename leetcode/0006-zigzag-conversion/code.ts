@@ -3,13 +3,13 @@ function convert(s: string, numRows: number): string {
     return s
   }
 
-  const dp: string[] = new Array(numRows).fill("")
+  const record: string[] = new Array(numRows).fill("")
   let curRow = -1
   let ascending = true
 
   for (const char of s) {
     curRow += ascending ? 1 : -1
-    dp[curRow] += char
+    record[curRow] += char
 
     if (curRow === numRows - 1) {
       ascending = false
@@ -18,7 +18,7 @@ function convert(s: string, numRows: number): string {
     }
   }
 
-  return dp.join("")
+  return record.join("")
 }
 
 console.log(convert("PAYPALISHIRING", 3))
