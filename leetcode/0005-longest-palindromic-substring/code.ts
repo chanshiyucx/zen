@@ -18,7 +18,6 @@ function longestPalindrome(s: string): string {
       ans = even
     }
   }
-
   return ans
 }
 
