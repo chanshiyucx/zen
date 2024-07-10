@@ -7,7 +7,7 @@ This is a simple simulation problem. The problem can be solved using a stack to 
 Below is the step-by-step breakdown of the approach:
 
 1. Initialization: Create a stack to keep track of all the parent folders.
-2. Iterate through the logs. For each log we update the stack:
+2. Iterate through the logs. For each log we update the stack.
    - `../`: This operation means moving to the parent folder. We pop the stack.
    - `./`: This operation means staying in the same folder. We do nothing.
    - `x/`: This operation means moving to a child folder named `x`. We push the child folder to the stack.
