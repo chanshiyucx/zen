@@ -2,10 +2,8 @@ function lengthOfLongestSubstring(s: string): number {
   if (s.length <= 1) {
     return s.length
   }
-
-  let ans = 1
-  const record = []
-
+  let ans: number = 1
+  const record: string[] = []
   for (const char of s) {
     const index = record.indexOf(char)
     if (index >= 0) {
@@ -14,7 +12,6 @@ function lengthOfLongestSubstring(s: string): number {
     record.push(char)
     ans = Math.max(ans, record.length)
   }
-
   return ans
 }
 
